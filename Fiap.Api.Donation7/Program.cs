@@ -1,3 +1,6 @@
+using Fiap.Api.Donation7.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+
+// Configurando o DataContext
+var connString = builder.Configuration.GetConnectionString("databaseUrl");
+builder.Services.AddDbContext<DataContext>(options =>
+    options.UseSqlServer(connString).EnableSensitiveDataLogging(true)
+);
+
 
 var app = builder.Build();
 
