@@ -20,18 +20,18 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpGet]
-        public ActionResult<IList<CategoriaModel>> GetAll()
+        public async Task<ActionResult<IList<CategoriaModel>>> GetAll()
         {
-            var categorias = _categoriaRepository.FindAll() ?? new List<CategoriaModel>();
+            var categorias = await _categoriaRepository.FindAll() ?? new List<CategoriaModel>();
             return Ok(categorias);
         }
 
         
 
         [HttpGet("{id:int}")]
-        public ActionResult<CategoriaModel> GetById([FromRoute] int id)
+        public async Task<ActionResult<CategoriaModel>> GetById([FromRoute] int id)
         {
-            var categoria = _categoriaRepository.FindById(id);
+            var categoria = await _categoriaRepository.FindById(id);
 
             if (categoria != null)
             {
@@ -45,7 +45,7 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpPost]
-        public ActionResult<CategoriaModel> Post([FromBody] CategoriaModel categoriaModel)
+        public async Task<ActionResult<CategoriaModel>> Post([FromBody] CategoriaModel categoriaModel)
         {
 
             if (!ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace Fiap.Api.Donation7.Controllers
                 return BadRequest(ModelState);
             } else
             {
-                categoriaModel.CategoriaId = _categoriaRepository.Insert(categoriaModel);
+                categoriaModel.CategoriaId = await _categoriaRepository.Insert(categoriaModel);
 
                 return CreatedAtAction(
                     nameof(GetById),
@@ -67,7 +67,7 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpPut("{id:int}")]
-        public ActionResult Put([FromRoute] int id, [FromBody] CategoriaModel categoriaModel)
+        public async Task<ActionResult> Put([FromRoute] int id, [FromBody] CategoriaModel categoriaModel)
         {
             
             if(!ModelState.IsValid){ 
@@ -79,12 +79,12 @@ namespace Fiap.Api.Donation7.Controllers
                 return BadRequest( new { error = "O id da URL deve ser igual ao id do corpo da requisição" });
             }
 
-            if (_categoriaRepository.FindById(id) == null)
+            if ( await _categoriaRepository.FindById(id) == null)
             {
                 return NotFound();
             }
 
-            _categoriaRepository.Update(categoriaModel);
+            await _categoriaRepository.Update(categoriaModel);
 
             return NoContent();
         }
@@ -92,19 +92,19 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete([FromRoute] int id)
+        public async Task<ActionResult> Delete([FromRoute] int id)
         {
             if ( id == 0)
             {
                 return BadRequest();
             }
 
-            if (_categoriaRepository.FindById(id) == null)
+            if (await _categoriaRepository.FindById(id) == null)
             {
                 return NotFound();
             }
 
-            _categoriaRepository.Delete(id);
+            await _categoriaRepository.Delete(id);
 
             return NoContent();
         }

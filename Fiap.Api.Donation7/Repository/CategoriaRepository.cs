@@ -15,36 +15,38 @@ namespace Fiap.Api.Donation7.Repository
         }
 
 
-        public IList<CategoriaModel> FindAll()
+        public async Task<IList<CategoriaModel>> FindAll()
         {
-            return _dataContext.Categorias.AsNoTracking().ToList();
+            return await _dataContext.Categorias.AsNoTracking().ToListAsync();
         }
 
-        public CategoriaModel FindById(int id)
+        public async Task<CategoriaModel> FindById(int id)
         {
-            return _dataContext.Categorias.AsNoTracking().FirstOrDefault(c => c.CategoriaId == id);
+            return await _dataContext.Categorias
+                            .AsNoTracking()
+                            .FirstOrDefaultAsync(c => c.CategoriaId == id);
         }
 
-        public int Insert(CategoriaModel categoriaModel)
+        public async Task<int> Insert(CategoriaModel categoriaModel)
         {
-            _dataContext.Categorias.Add(categoriaModel);
-            _dataContext.SaveChanges();
+            await _dataContext.Categorias.AddAsync(categoriaModel);
+            await _dataContext.SaveChangesAsync();
 
             return categoriaModel.CategoriaId;
         }
 
-        public void Update(CategoriaModel categoriaModel)
+        public async Task Update(CategoriaModel categoriaModel)
         {
             _dataContext.Categorias.Update(categoriaModel);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var categoria = new CategoriaModel() { CategoriaId = id };
 
             _dataContext.Categorias.Remove(categoria);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
         }
 
 

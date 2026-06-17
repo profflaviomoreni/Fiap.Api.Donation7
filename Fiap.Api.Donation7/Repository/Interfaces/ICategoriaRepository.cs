@@ -5,11 +5,11 @@ namespace Fiap.Api.Donation7.Repository.Interfaces
     public interface ICategoriaRepository
     {
 
-        public IList<CategoriaModel> FindAll();
-        public CategoriaModel FindById(int id);
-        public int Insert(CategoriaModel categoriaModel);
-        public void Update(CategoriaModel categoriaModel);
-        public void Delete(int id);
+        public Task<IList<CategoriaModel>> FindAll();
+        public Task<CategoriaModel> FindById(int id);
+        public Task<int> Insert(CategoriaModel categoriaModel);
+        public Task Update(CategoriaModel categoriaModel);
+        public Task Delete(int id);
 
 
     }
