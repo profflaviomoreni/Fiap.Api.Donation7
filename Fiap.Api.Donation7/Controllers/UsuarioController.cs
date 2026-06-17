@@ -2,10 +2,9 @@
 using Fiap.Api.Donation7.Model;
 using Fiap.Api.Donation7.Repository;
 using Fiap.Api.Donation7.Repository.Interfaces;
+using Fiap.Api.Donation7.Services;
 using Fiap.Api.Donation7.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace Fiap.Api.Donation7.Controllers
 {
@@ -16,9 +15,13 @@ namespace Fiap.Api.Donation7.Controllers
 
         private readonly IUsuarioRepository _usuarioRepository;
 
+        private readonly AuthTokenService _authTokenService;
+
+
         public UsuarioController(DataContext dataContext, IConfiguration configuration)
         {
             _usuarioRepository = new UsuarioRepository(dataContext);
+            _authTokenService = new AuthTokenService(configuration);
         }
 
 
@@ -101,26 +104,28 @@ namespace Fiap.Api.Donation7.Controllers
 
         [HttpPost]
         [Route("login")]
-        public ActionResult<LoginResponseVM> Login(LoginRequestVM loginRequest)
+        public ActionResult<LoginResponseVM> Login([FromBody] LoginRequestVM loginRequest)
         {
+            if (loginRequest == null)
+                return BadRequest();
+
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
-            else
+
+            var usuario = _usuarioRepository.FindByEmailAndSenha(loginRequest.EmailUsuario, loginRequest.Senha);
+            if (usuario == null)
+                return Unauthorized();
+
+
+            var token = _authTokenService.GenerateToken(usuario.EmailUsuario, usuario.UsuarioId, usuario.Regra);
+
+            var loginResponse = new LoginResponseVM
             {
+                NomeUsuario = usuario.NomeUsuario,
+                Token = token
+            };
 
-                var usuario = _usuarioRepository.FindByEmailAndSenha(loginRequest.EmailUsuario, loginRequest.Senha);
-
-                var loginResponse = new LoginResponseVM
-                {
-                    NomeUsuario = usuario.NomeUsuario,
-                    Token = "13132132.654564654654.313131313"
-                };
-
-                return Ok(loginResponse);
-            }
-
+            return Ok(loginResponse);
         }
 
     }
