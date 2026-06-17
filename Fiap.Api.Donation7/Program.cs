@@ -1,3 +1,4 @@
+using Fiap.Api.Donation7;
 using Fiap.Api.Donation7.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     }
 );
+
+
+//AutoMapper
+builder.Services.AddAutoMapper( config => {
+    config.AddProfile<MappingProfile>();
+});
 
 
 

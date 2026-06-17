@@ -1,4 +1,5 @@
-﻿using Fiap.Api.Donation7.Data;
+﻿using AutoMapper;
+using Fiap.Api.Donation7.Data;
 using Fiap.Api.Donation7.Model;
 using Fiap.Api.Donation7.Repository;
 using Fiap.Api.Donation7.Repository.Interfaces;
@@ -17,11 +18,14 @@ namespace Fiap.Api.Donation7.Controllers
 
         private readonly AuthTokenService _authTokenService;
 
+        private readonly IMapper _mapper;
 
-        public UsuarioController(DataContext dataContext, IConfiguration configuration)
+
+        public UsuarioController(DataContext dataContext, IConfiguration configuration, IMapper mapper)
         {
             _usuarioRepository = new UsuarioRepository(dataContext);
             _authTokenService = new AuthTokenService(configuration);
+            _mapper = mapper;
         }
 
 
@@ -29,21 +33,21 @@ namespace Fiap.Api.Donation7.Controllers
         public ActionResult<IList<UsuarioResponseVM>> GetAll()
         {
             var usuarios = _usuarioRepository.FindAll();
-
-            var listaUsuariosVM = new List<UsuarioResponseVM>();
-
-            foreach (var item in usuarios)
-            {
-                var usuarioVM = new UsuarioResponseVM();
-                usuarioVM.UsuarioId = item.UsuarioId;
-                usuarioVM.NomeUsuario = item.NomeUsuario;
-                usuarioVM.EmailUsuario = item.EmailUsuario;
-
-                listaUsuariosVM.Add(usuarioVM);
-            }
-
-
+            var listaUsuariosVM = _mapper.Map<IList<UsuarioResponseVM>>(usuarios);
             return Ok(listaUsuariosVM);
+
+
+            //var listaUsuariosVM = new List<UsuarioResponseVM>();
+
+            //foreach (var item in usuarios)
+            //{
+            //    var usuarioVM = new UsuarioResponseVM();
+            //    usuarioVM.UsuarioId = item.UsuarioId;
+            //    usuarioVM.NomeUsuario = item.NomeUsuario;
+            //    usuarioVM.EmailUsuario = item.EmailUsuario;
+
+            //    listaUsuariosVM.Add(usuarioVM);
+            //}
         }
 
 
@@ -54,12 +58,7 @@ namespace Fiap.Api.Donation7.Controllers
             if (usuarioModel == null)
                 return NotFound();
 
-
-            var usuarioVM = new UsuarioResponseVM();
-            usuarioVM.UsuarioId = usuarioModel.UsuarioId;
-            usuarioVM.NomeUsuario = usuarioModel.NomeUsuario;
-            usuarioVM.EmailUsuario = usuarioModel.EmailUsuario;
-
+            var usuarioVM = _mapper.Map<UsuarioResponseVM>(usuarioModel); 
 
             return Ok(usuarioVM);
         }
@@ -116,14 +115,8 @@ namespace Fiap.Api.Donation7.Controllers
             if (usuario == null)
                 return Unauthorized();
 
-
-            var token = _authTokenService.GenerateToken(usuario.EmailUsuario, usuario.UsuarioId, usuario.Regra);
-
-            var loginResponse = new LoginResponseVM
-            {
-                NomeUsuario = usuario.NomeUsuario,
-                Token = token
-            };
+            var loginResponse = _mapper.Map<LoginResponseVM>(usuario);
+            loginResponse.Token = _authTokenService.GenerateToken(usuario.EmailUsuario, usuario.UsuarioId, usuario.Regra);
 
             return Ok(loginResponse);
         }
