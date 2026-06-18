@@ -1,14 +1,16 @@
-﻿using AutoMapper;
-using Fiap.Api.Donation7.Model;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Fiap.Api.Donation7.Repository.Interfaces;
 using Fiap.Api.Donation7.ViewModel;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fiap.Api.Donation7.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0", Deprecated = true)]
+    [ApiVersion("2.0")]
+    [ApiVersion("3.0")]
     public class ProdutoController : ControllerBase
     {
 

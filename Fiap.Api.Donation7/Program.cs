@@ -57,6 +57,22 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 
+//Versionamento
+builder.Services.AddApiVersioning( options =>
+{
+    options.DefaultApiVersion = new Asp.Versioning.ApiVersion(3, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+    options.UnsupportedApiVersionStatusCode = 421;
+}).AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+});
+
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
