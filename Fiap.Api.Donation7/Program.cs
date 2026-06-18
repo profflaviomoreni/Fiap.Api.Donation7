@@ -1,5 +1,8 @@
 using Fiap.Api.Donation7;
 using Fiap.Api.Donation7.Data;
+using Fiap.Api.Donation7.Repository;
+using Fiap.Api.Donation7.Repository.Interfaces;
+using Fiap.Api.Donation7.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -45,6 +48,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAutoMapper( config => {
     config.AddProfile<MappingProfile>();
 });
+
+
+//Injecao de dependencias
+builder.Services.AddScoped<AuthTokenService, AuthTokenService>();
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
 
 

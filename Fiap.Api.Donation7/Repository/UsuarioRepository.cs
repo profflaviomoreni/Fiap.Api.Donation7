@@ -15,21 +15,21 @@ namespace Fiap.Api.Donation7.Repository
             _dataContext = dataContext;
         }
 
-        public IList<UsuarioModel> FindAll()
+        public async Task<IList<UsuarioModel>> FindAll()
         {
-            return _dataContext.Usuarios.AsNoTracking().ToList();
+            return await _dataContext.Usuarios.AsNoTracking().ToListAsync();
         }
 
-        public UsuarioModel FindById(int id)
+        public async Task<UsuarioModel> FindById(int id)
         {
-            var usuario = _dataContext.Usuarios.AsNoTracking().FirstOrDefault(u => u.UsuarioId == id);
+            var usuario = await _dataContext.Usuarios.AsNoTracking().FirstOrDefaultAsync(u => u.UsuarioId == id);
 
             return usuario;
         }
 
-        public UsuarioModel FindByEmailAndSenha(string email, string senha)
+        public async Task<UsuarioModel> FindByEmailAndSenha(string email, string senha)
         {
-            var usuario = _dataContext.Usuarios.AsNoTracking().FirstOrDefault(
+            var usuario = await _dataContext.Usuarios.AsNoTracking().FirstOrDefaultAsync(
                     u => u.EmailUsuario == email &&
                          u.Senha == senha
                 );
@@ -37,27 +37,27 @@ namespace Fiap.Api.Donation7.Repository
             return usuario;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var usuario = new UsuarioModel();
             usuario.UsuarioId = id;
 
             _dataContext.Usuarios.Remove(usuario);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
         }
 
-        public int Insert(UsuarioModel usuarioModel)
+        public async Task<int> Insert(UsuarioModel usuarioModel)
         {
             _dataContext.Usuarios.Add(usuarioModel);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
 
             return usuarioModel.UsuarioId;
         }
 
-        public void Update(UsuarioModel usuarioModel)
+        public async Task Update(UsuarioModel usuarioModel)
         {
             _dataContext.Usuarios.Update(usuarioModel);
-            _dataContext.SaveChanges();
+            await _dataContext.SaveChangesAsync();
         }
 
     }

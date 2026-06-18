@@ -4,16 +4,16 @@ namespace Fiap.Api.Donation7.Repository.Interfaces
 {
     public interface IUsuarioRepository
     {
-        public IList<UsuarioModel> FindAll();
+        public Task<IList<UsuarioModel>> FindAll();
 
-        public UsuarioModel FindById(int id);
+        public Task<UsuarioModel> FindById(int id);
 
-        public UsuarioModel FindByEmailAndSenha(string email, string senha);
+        public Task<UsuarioModel> FindByEmailAndSenha(string email, string senha);
 
-        public int Insert(UsuarioModel usuarioModel);
+        public Task<int> Insert(UsuarioModel usuarioModel);
 
-        public void Update(UsuarioModel usuarioModel);
+        public Task Update(UsuarioModel usuarioModel);
 
-        public void Delete(int id);
+        public Task Delete(int id);
     }
 }

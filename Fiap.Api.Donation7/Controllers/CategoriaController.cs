@@ -1,6 +1,4 @@
-﻿using Fiap.Api.Donation7.Data;
-using Fiap.Api.Donation7.Model;
-using Fiap.Api.Donation7.Repository;
+﻿using Fiap.Api.Donation7.Model;
 using Fiap.Api.Donation7.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +11,9 @@ namespace Fiap.Api.Donation7.Controllers
 
         private readonly ICategoriaRepository _categoriaRepository;
 
-        public CategoriaController(DataContext dataContext)
+        public CategoriaController(ICategoriaRepository categoriaRepository)
         {
-            _categoriaRepository = new CategoriaRepository(dataContext);
+            _categoriaRepository = categoriaRepository;
         }
 
 

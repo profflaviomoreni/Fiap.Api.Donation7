@@ -21,40 +21,27 @@ namespace Fiap.Api.Donation7.Controllers
         private readonly IMapper _mapper;
 
 
-        public UsuarioController(DataContext dataContext, IConfiguration configuration, IMapper mapper)
+        public UsuarioController(IUsuarioRepository usuarioRepository, AuthTokenService authTokenService, IMapper mapper)
         {
-            _usuarioRepository = new UsuarioRepository(dataContext);
-            _authTokenService = new AuthTokenService(configuration);
+            _usuarioRepository = usuarioRepository;
+            _authTokenService = authTokenService;
             _mapper = mapper;
         }
 
 
         [HttpGet]
-        public ActionResult<IList<UsuarioResponseVM>> GetAll()
+        public async Task<ActionResult<IList<UsuarioResponseVM>>> GetAll()
         {
-            var usuarios = _usuarioRepository.FindAll();
+            var usuarios = await _usuarioRepository.FindAll();
             var listaUsuariosVM = _mapper.Map<IList<UsuarioResponseVM>>(usuarios);
             return Ok(listaUsuariosVM);
-
-
-            //var listaUsuariosVM = new List<UsuarioResponseVM>();
-
-            //foreach (var item in usuarios)
-            //{
-            //    var usuarioVM = new UsuarioResponseVM();
-            //    usuarioVM.UsuarioId = item.UsuarioId;
-            //    usuarioVM.NomeUsuario = item.NomeUsuario;
-            //    usuarioVM.EmailUsuario = item.EmailUsuario;
-
-            //    listaUsuariosVM.Add(usuarioVM);
-            //}
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult<UsuarioResponseVM> GetById(int id)
+        public async Task<ActionResult<UsuarioResponseVM>> GetById(int id)
         {
-            var usuarioModel = _usuarioRepository.FindById(id);
+            var usuarioModel = await _usuarioRepository.FindById(id);
             if (usuarioModel == null)
                 return NotFound();
 
@@ -65,12 +52,12 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpPost]
-        public ActionResult<UsuarioModel> Post([FromBody] UsuarioModel usuarioModel)
+        public async Task<ActionResult<UsuarioModel>> Post([FromBody] UsuarioModel usuarioModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuarioId = _usuarioRepository.Insert(usuarioModel);
+            var usuarioId = await _usuarioRepository.Insert(usuarioModel);
             usuarioModel.UsuarioId = usuarioId;
 
             return CreatedAtAction(nameof(GetById), new { id = usuarioId }, usuarioModel);
@@ -78,24 +65,24 @@ namespace Fiap.Api.Donation7.Controllers
 
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UsuarioModel usuarioModel)
+        public async Task<IActionResult> Put(int id, [FromBody] UsuarioModel usuarioModel)
         {
             if (id != usuarioModel.UsuarioId)
                 return BadRequest("ID da URL diferente do corpo da requisição.");
 
-            _usuarioRepository.Update(usuarioModel);
+            await _usuarioRepository.Update(usuarioModel);
             return NoContent();
         }
 
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var usuario = _usuarioRepository.FindById(id);
+            var usuario = await _usuarioRepository.FindById(id);
             if (usuario == null)
                 return NotFound();
 
-            _usuarioRepository.Delete(id);
+            await _usuarioRepository.Delete(id);
             return NoContent();
         }
 
@@ -103,7 +90,7 @@ namespace Fiap.Api.Donation7.Controllers
 
         [HttpPost]
         [Route("login")]
-        public ActionResult<LoginResponseVM> Login([FromBody] LoginRequestVM loginRequest)
+        public async Task<ActionResult<LoginResponseVM>> Login([FromBody] LoginRequestVM loginRequest)
         {
             if (loginRequest == null)
                 return BadRequest();
@@ -111,7 +98,7 @@ namespace Fiap.Api.Donation7.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var usuario = _usuarioRepository.FindByEmailAndSenha(loginRequest.EmailUsuario, loginRequest.Senha);
+            var usuario = await _usuarioRepository.FindByEmailAndSenha(loginRequest.EmailUsuario, loginRequest.Senha);
             if (usuario == null)
                 return Unauthorized();
 
