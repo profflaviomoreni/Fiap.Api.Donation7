@@ -54,7 +54,7 @@ builder.Services.AddAutoMapper( config => {
 builder.Services.AddScoped<AuthTokenService, AuthTokenService>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-
+builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
 
 var app = builder.Build();
