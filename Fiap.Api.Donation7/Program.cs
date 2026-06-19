@@ -56,6 +56,7 @@ builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<ITrocaRepository, TrocaRepository>();
+builder.Services.AddScoped<ITrocaService, TrocaService>();
 
 
 //Versionamento
