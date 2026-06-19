@@ -23,6 +23,33 @@ namespace Fiap.Api.Donation7.Repository
                     .ToListAsync();
         }
 
+        public async Task<IList<ProdutoModel>> FindAllAsync(int pagina, int tamanho)
+        {
+            return await _dataContext.Produtos
+                .AsNoTracking()
+                    .Include(p => p.Categoria)
+                    .Include(p => p.Usuario)
+                        .Skip(pagina * tamanho)
+                        .Take(tamanho)
+                    .ToListAsync();
+        }
+
+        public async Task<IList<ProdutoModel>> FindAllByRefAsync(int idRef, int tamanho)
+        {
+            return await _dataContext.Produtos
+                .AsNoTracking()
+                    .Include(p => p.Categoria)
+                    .Include(p => p.Usuario)
+                        .Where(p => p.ProdutoId > idRef)
+                        .Take(tamanho)
+                    .ToListAsync();
+        }
+
+        public async Task<int> Count()
+        {
+            return await _dataContext.Produtos.AsNoTracking().CountAsync();
+        }
+
 
         public async Task<ProdutoModel> FindByIdAsync(int id)
         {
@@ -60,5 +87,7 @@ namespace Fiap.Api.Donation7.Repository
                 await DeleteAsync(produtoModel);
             }
         }
+
+        
     }
 }
