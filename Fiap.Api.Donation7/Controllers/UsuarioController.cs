@@ -11,7 +11,7 @@ namespace Fiap.Api.Donation7.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class UsuarioController : BaseController
     {
 
         private readonly IUsuarioRepository _usuarioRepository;

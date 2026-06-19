@@ -55,6 +55,7 @@ builder.Services.AddScoped<AuthTokenService, AuthTokenService>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddScoped<ITrocaRepository, TrocaRepository>();
 
 
 //Versionamento

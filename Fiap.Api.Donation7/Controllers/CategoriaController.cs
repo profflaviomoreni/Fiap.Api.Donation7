@@ -6,7 +6,7 @@ namespace Fiap.Api.Donation7.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriaController : ControllerBase
+    public class CategoriaController : BaseController
     {
 
         private readonly ICategoriaRepository _categoriaRepository;

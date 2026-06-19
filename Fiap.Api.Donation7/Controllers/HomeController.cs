@@ -5,7 +5,7 @@ namespace Fiap.Api.Donation7.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class HomeController : BaseController
     {
 
         [HttpGet]

@@ -12,7 +12,7 @@ namespace Fiap.Api.Donation7.Controllers
     [ApiVersion("1.0", Deprecated = true)]
     [ApiVersion("2.0")]
     [ApiVersion("3.0")]
-    public class ProdutoController : ControllerBase
+    public class ProdutoController : BaseController
     {
 
         private readonly IProdutoRepository _produtoRepository;

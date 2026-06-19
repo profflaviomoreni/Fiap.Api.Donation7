@@ -7,7 +7,7 @@ namespace Fiap.Api.Donation7.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class AcessoController : ControllerBase
+    public class AcessoController : BaseController
     {
 
         [HttpGet]
@@ -51,24 +51,6 @@ namespace Fiap.Api.Donation7.Controllers
         public string Revisor()
         {
             return "Revisor";
-        }
-
-
-        private int GetUserId()
-        {
-            int userId = 0;
-
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-            if (identity != null)
-            {
-                var userIdIdentity = identity.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdIdentity != null && userIdIdentity.Value != null)
-                {
-                    userId = Int16.Parse(userIdIdentity.Value);
-                }
-            }
-
-            return userId;
         }
 
 

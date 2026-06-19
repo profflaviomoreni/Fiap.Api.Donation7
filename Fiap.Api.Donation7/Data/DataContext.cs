@@ -12,6 +12,8 @@ namespace Fiap.Api.Donation7.Data
 
         public DbSet<ProdutoModel> Produtos { get; set; }
 
+        public DbSet<TrocaModel> Trocas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             #region Categoria
@@ -139,6 +141,36 @@ namespace Fiap.Api.Donation7.Data
 
             #endregion
 
+
+            #region Troca
+            modelBuilder.Entity<TrocaModel>(entity =>
+            {
+                entity.ToTable("Troca");
+                entity.HasKey(e => e.TrocaId);
+
+                entity.Property(e => e.TrocaStatus)
+                      .IsRequired();
+
+                entity.Property(e => e.DataCriacao)
+                      .IsRequired();
+
+                entity.HasOne(e => e.Usuario)
+                    .WithMany()
+                    .HasForeignKey(e => e.UsuarioId)
+                    .IsRequired();
+
+                entity.HasOne(e => e.ProdutoMeu)
+                    .WithMany()
+                    .HasForeignKey(e => e.ProdutoIdMeu)
+                    .OnDelete(DeleteBehavior.NoAction); // ATENÇÃO AQUI <-----
+
+                entity.HasOne(e => e.ProdutoEscolhido)
+                   .WithMany()
+                   .HasForeignKey(e => e.ProdutoIdEscolhido)
+                   .OnDelete(DeleteBehavior.NoAction); // ATENÇÃO AQUI <-----
+
+            });
+            #endregion
 
             base.OnModelCreating(modelBuilder);
         }

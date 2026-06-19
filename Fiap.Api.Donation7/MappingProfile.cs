@@ -7,7 +7,8 @@ namespace Fiap.Api.Donation7
     public class MappingProfile : Profile
     {
 
-        public MappingProfile() {
+        public MappingProfile()
+        {
 
             CreateMap<UsuarioModel, UsuarioResponseVM>();
             CreateMap<UsuarioModel, LoginResponseVM>();
@@ -22,14 +23,18 @@ namespace Fiap.Api.Donation7
                     opt => opt.MapFrom(src => src.Usuario == null ? String.Empty : src.Usuario.NomeUsuario)
                 );
 
-        //CreateMap<UsuarioModel, UsuarioResponseVM>()
-        //    .ForMember(dest => dest.UsuarioCodigo, opt => opt.MapFrom(src => src.UsuarioId))
-        //    .ForMember(dest => dest.Nome, opt => opt.MapFrom(src => src.NomeUsuario))
-        //    .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.EmailUsuario));
+            CreateMap<TrocaRequestVM, TrocaModel>();
 
+            CreateMap<TrocaModel, TrocaResponseVM>()
+               .ForMember(
+                   dest => dest.ProdutoNomeEscolhido,
+                   opt => opt.MapFrom(src => src.ProdutoEscolhido == null ? String.Empty : src.ProdutoEscolhido.Nome)
+               )
+               .ForMember(
+                   dest => dest.ProdutoNomeMeu,
+                   opt => opt.MapFrom(src => src.ProdutoMeu == null ? String.Empty : src.ProdutoMeu.Nome)
+               );
 
-
-    }
-
+        }
     }
 }
