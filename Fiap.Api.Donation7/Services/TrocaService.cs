@@ -8,11 +8,13 @@ namespace Fiap.Api.Donation7.Services
         private readonly IProdutoRepository _produtoRepository;
         private readonly ITrocaRepository _trocaRepository;
 
+
         public TrocaService(IProdutoRepository produtoRepository, ITrocaRepository trocaRepository)
         {
             _produtoRepository = produtoRepository;
             _trocaRepository = trocaRepository;
         }
+        
 
         public async Task Trocar(TrocaModel trocaModel)
         {

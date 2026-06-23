@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="Fiap.Api.Donation7/Fiap.Api.Donation7.csproj" />
+  <Project Path="Fiap.Api.Donation7Test/Fiap.Api.Donation7Test.csproj" Id="a27e95c0-41fc-47ed-bf85-bdb8c0560ef2" />
 </Solution>
